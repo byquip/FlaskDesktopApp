@@ -1,0 +1,17 @@
+altgraph
+click
+colorama
+Flask
+flaskwebgui
+future
+itsdangerous
+Jinja2
+MarkupSafe
+pefile
+psutil
+pyinstaller
+pyinstaller-hooks-contrib
+pywin32-ctypes
+Werkzeug
+whichcraft
+
