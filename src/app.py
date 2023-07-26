@@ -5,9 +5,9 @@ from typing import Any
 
 import webview
 from flask import Flask, render_template, request, Response
-from flask_socketio import SocketIO
+# from flask_socketio import SocketIO
 
-import eventlet
+# import eventlet
 import psutil
 import flaskwebgui
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -55,9 +55,9 @@ def connect_port():
 
 @app.route('/api/read', methods=['GET'])
 def read_data():
-    data = read(device)
-    print(data)
-    return data
+    # data = read(device)
+    # print(data)
+    return str(random.randint(1, 100))
 
 
 
@@ -69,7 +69,7 @@ def plot_png():
     global fig
     # fig = create_figure()
     dat = request.args.get('data')
-    print(f"passed data: {dat}")
+    # print(f"passed data: {dat}")
     if dat == 'No device connected':
         return None
     try:
@@ -81,7 +81,7 @@ def plot_png():
         # if not dat.isdigit():
         #     return None
 
-    print(f"DATA: {data}")
+    # print(f"DATA: {data}")
     line.set_ydata(data)
     ax.relim()
     ax.autoscale_view()
@@ -92,7 +92,7 @@ def plot_png():
     # print(data)
     # plt.gcf().savefig('./static/new_plot.png')
     # plt.savefig('./static/new_plot.png')
-    print("plotting")
+    # print("plotting")
     return Response(output.getvalue(), mimetype='image/png')
     # return render_template('index.html', url='./static/new_plot.png')
     # return None
@@ -111,11 +111,11 @@ def run():
 
 
 if __name__ == '__main__':
-    # app.run(debug=True) # if you want to run this as a standalone script, use this
+    app.run(debug=True) # if you want to run this as a standalone script, use this
     # gui.run()
-    t = Thread(target=run)
-    t.start()
-
-    # Create a borderless webview window
-    webview.create_window("My Flask App", "http://127.0.0.1:5000", frameless=False, width=1024, height=720)
-    webview.start()
+    # t = Thread(target=run)
+    # t.start()
+    #
+    # # Create a borderless webview window
+    # webview.create_window("My Flask App", "http://127.0.0.1:5000", frameless=False, width=1024, height=720)
+    # webview.start()

@@ -9,18 +9,24 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>-->
 <!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>-->
     <title>CPU-meter</title>
 </head>
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div class='pywebview-drag-region'>Test App</div>
-    <canvas id="myChart"></canvas>
+    <div class="container">
+        <canvas id="myChart"  width="400" height="400" ></canvas>
+    </div>
 
-<!--    print style.css path in js-->
-<!--    <script>console.log('style.css path: ' + window.getComputedStyle(document.querySelector('link[rel=stylesheet]')).getPropertyValue('href'))</script>-->
-<!--    <div class="logo">-->
-<!--        <img src="./static/logo.png" alt="logo">-->
-<!--    </div>-->
-    <img id='myplot' src='api/plot.png' alt="my plot">
+
+    <!--    print style.css path in js-->
+    <!--    <script>console.log('style.css path: ' + window.getComputedStyle(document.querySelector('link[rel=stylesheet]')).getPropertyValue('href'))</script>-->
+    <!--    <div class="logo">-->
+    <!--        <img src="./static/logo.png" alt="logo">-->
+    <!--    </div>-->
+    <!--    <img id='myplot' src='api/plot.png' alt="my plot">-->
     <div class="buttons">
         <select name="plan" id="ports">
             <option value="0">Ports</option>
@@ -31,58 +37,7 @@
 
     <progress id="usage" value="0" max="100"></progress>
 
-    <script>
+    <script src="./static/body.js"></script>
 
-        function fetch_cpu_usage(){
-            $.get('api/cpu', function(data){
-                //console.log(data);
-                $('#cpu_usage').html(data);
-                $('#usage').val(data);
-                //console.log('style.css path: ' + window.getComputedStyle(document.querySelector('link[rel=stylesheet]')).getPropertyValue('href'));
-            })
-        }
-
-        function fetch_ports(){
-            $.get('api/ports', function(data){
-                var optionsHtml = data.map(function(item) {
-                    return '<option value="' + item + '">' + item + '</option>';
-                }).join('');
-
-                $('#ports').html(optionsHtml);
-            })
-        };
-
-        function fetch_data(){
-            $.get('api/read', function(data){
-                console.log(data);
-                //$('#plot').html(data);
-                $.get('api/plot.png', {data: data}, function(data2){
-                    console.log(data2);
-                    $("#myplot").attr("src", 'api/plot.png?data=' + data);
-
-                })
-            })
-        };
-
-        window.onload = fetch_ports();
-
-        setInterval(function(){
-            //fetch_cpu_usage();
-            //fetch_ports();
-        }, 1000);
-
-        setInterval(function(){
-            fetch_data();
-        }, 100);
-
-        // connect to the port by api call 'api/connect' by clicking on the button 'Connect'
-        $('#Connect').click(function(){
-            var port = $('#ports').val();
-            $.get('api/connect', {port: port}, function(data){
-                console.log(data);
-            })
-        })
-
-    </script>
 </body>
 </html>
