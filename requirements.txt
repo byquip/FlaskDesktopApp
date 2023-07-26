@@ -1,3 +1,4 @@
+pywebview
 altgraph
 click
 colorama
