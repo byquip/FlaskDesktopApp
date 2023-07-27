@@ -1,6 +1,9 @@
 import serial
 import sys
 import glob
+import time
+
+start_time = 0
 
 
 def serial_ports():
@@ -29,18 +32,32 @@ def serial_ports():
             result.append(port)
         except (OSError, serial.SerialException):
             pass
-    return result
+    return result[::-1]
 
 
 def connect(port):
+    global start_time
+    start_time = time.time()
     ser = serial.Serial(port, 9600, timeout=1)
     ser.flush()
     return ser
 
 
+def disconnect(ser):
+    ser.close()
+    return "disconnected"
+
+
 def read(ser):
     if ser is None:
         return "No device connected"
-    if ser.in_waiting > 0:
-        line = (ser.read_until().decode('utf-8').rstrip().split()[0])
-        return line
+    if ser.in_waiting > 20:
+        # line = (ser.read_until().decode('utf-8').rstrip().split()[0])
+        line = ser.read(ser.in_waiting).decode('utf-8').split("\r\n")[-2].split()[0]
+        try:
+            float(line)
+        except:
+            return "No device connected"
+        finally:
+            print(line)
+            return {"x": (time.time()-start_time), "y": (float(line))}

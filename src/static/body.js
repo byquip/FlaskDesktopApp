@@ -1,34 +1,15 @@
 console.log("Start");
 
-//var canvas = document.getElementById('myChart');
-//const canvas = component.find("myChart");
 var canvas = document.getElementById('myChart');
-//console.log(canvas);
-//var canvas1 = document.getElementById('myChart').getContext('2d');
-//console.log(canvas1);
-//var canvas2 = $('#myChart');
-//console.log(canvas2);
-//var canvas3 = 'myChart';
-//console.log(canvas3);
-////const canvas = document.querySelector("myChart")
-//const canvas4 = document.querySelector("myChart")
-//console.log(canvas4);
-//canvas.height = 75;
-
-const labels = [
-  'dju32',
-  'ad6b2',
-  '0f23f',
-  'asd4c',
-];
 
 const data = {
-  labels: labels,
   datasets: [{
-    label: 'Test',
+    label: '',
     backgroundColor: 'rgb(255, 99, 132)',
     borderColor: 'rgb(255, 99, 132)',
-    data: [0, 10, 5, 4],
+    data: [{
+        }],
+        showLine: true,
   }]
 };
 
@@ -39,48 +20,66 @@ const data = {
 //};
 
 var myChart = new Chart(canvas, {
-  type: 'line',
+  type: 'scatter',
   data: data,
-  options: {}
-}
+  options: {
+  responsive:true,
+  maintainAspectRatio: false,
+  animation: {
+        duration: 0
+    },
+  scales: {
+        y: {
+            min: -1,
+            max: 1,
+            stepSize: 1,
+
+        },
+        x: {
+            min: 0,
+            max: 12,
+            stepSize: 1,
+            ticks: {
+                callback: function(val, index) {
+
+                    return Math.round(val,1);
+                },
+
+            },
+        },
+    }
+    }
+  }
 );
 
+once = true;
+
 // function to update the chart
-function addData(chart, label, data) {
-  chart.data.labels.push(label);
+function addData(chart, data) {
+
   chart.data.datasets.forEach((dataset) => {
+    if (once){
+        dataset.data.shift();
+        once = false;
+    }
+
+    dataset.data = dataset.data.filter(function( element ) {
+        return element !== undefined;
+    });
+
+   if((dataset.data.length > 2) && ((dataset.data[dataset.data.length-1].x) > 12.0)){
+        dataset.data.shift();
+       chart.options.scales.x.min = dataset.data[0].x;
+       chart.options.scales.x.max = dataset.data[dataset.data.length-1].x;
+   }
+   else if((dataset.data.length > 2) && ((dataset.data[dataset.data.length-1].x) < 12.0)){
+       chart.options.scales.x.min = 0.;
+       chart.options.scales.x.max = 12.;
+   }
     dataset.data.push(data);
+
   });
   chart.update();
-}
-
-// randomly add new data
-//setInterval(function() {
-//    // time in seconds
-////    fetch_data(function(data) {
-//    // You can use your data here
-////    console.log(data);
-//    const newLabel = Math.floor(Math.random() * 10);
-//    const val = fetch_data();
-//    console.log(val);
-//    addData(myChart, newLabel, val);
-//
-////    });
-//
-//}, 1000);
-setInterval(function() {
-  const newLabel = (Math.random() + 1).toString(36).substring(7);
-  const newData = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-  addData(myChart, newLabel, newData);
-}, 1000);
-
-function fetch_cpu_usage(){
-    $.get('api/cpu', function(data){
-        //console.log(data);
-        $('#cpu_usage').html(data);
-        $('#usage').val(data);
-        //console.log('style.css path: ' + window.getComputedStyle(document.querySelector('link[rel=stylesheet]')).getPropertyValue('href'));
-    })
 }
 
 function fetch_ports(){
@@ -107,40 +106,44 @@ function fetch_data() {
             console.log(textStatus, errorThrown);
         }
     });
-    console.log(result);
     return result;
 }
 
-//function fetch_data(){
-//    var data2;
-//    $.get('api/read', function(data){
-//        console.log(data);
-//        callback(data);
-////        data2 = data;
-////        console.log(data);
-//        //$('#plot').html(data);
-////        $.get('api/plot.png', {data: data}, function(data2){
-////            console.log(data2);
-////            $("#myplot").attr("src", 'api/plot.png?data=' + data);
-//
-//        })
-//};
+//window.onload = fetch_ports();
 
-window.onload = fetch_ports();
+var interval_chart;
 
-//setInterval(function(){
-//    //fetch_cpu_usage();
-//    //fetch_ports();
-//}, 1000);
-
-//setInterval(function(){
-//    fetch_data();
-//}, 1000);
-
-// connect to the port by api call 'api/connect' by clicking on the button 'Connect'
-$('#Connect').click(function(){
+function discon(){
+console.log($('#Connect').text() == 'Connect');
+if ($('#Connect').text() == 'Connect'){
+    $('#Connect').text('Disconnect');
     var port = $('#ports').val();
+    $('#ports').prop('disabled', true);
     $.get('api/connect', {port: port}, function(data){
         console.log(data);
-    })
-})
+    });
+
+    myChart.config.data.datasets.forEach((dataset) => {
+        dataset.data = [];
+        });
+
+    myChart.update();
+
+    interval_chart = setInterval(function() {
+      const newData = fetch_data();
+      addData(myChart, newData);
+    }, 100);
+
+    }
+else{
+    clearInterval(interval_chart);
+    $('#ports').prop('disabled', false);
+    $('#Connect').text('Connect');
+    $.get('api/disconnect');
+}
+}
+
+$('#Scan').click(function(){
+    fetch_ports();
+});
+
