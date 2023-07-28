@@ -6,19 +6,19 @@ html, body::after{
     background-color: #212121;
     color: #fff;
     position: relative;
-    height:50vh;
-    width:45vw
+    height:100vh;
+    width:100vw
 }
 
 html { background-color: rgba(0,0,0,0)}
 body {
     background-color:#212121;
-    border-radius: 20px;
+    /*border-radius: 20px;
     -moz-border-radius:14px;
     -webkit-border-radius:14px;
     -moz-box-shadow:0 2px 2px rgba(0,0,0,0.3);
     -webkit-box-shadow:0 2px 2px rgba(0,0,0,0.3);
-    box-shadow: 0 12px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 12px 12px rgba(0,0,0,0.3); */
 }
 
 .pywebview-drag-region{
@@ -37,14 +37,21 @@ body {
 }
 
 .buttons button, .buttons select {
-    height: 3.5vh; /* Adjust as needed */
-    width: 8vh; /* Adjust as needed */
-    font-size: 2vh; /* Adjust as needed */
+    height: 5vh; /* Adjust as needed */
+    /* text width */
+    width: fit-content;
+    text-align: center;
+    padding: 0px 10px;
 }
 
 .chart-container{
+    /*fit rest height*/
+    height: 80vh;
+}
+
+.chart-container myChart{
     position: relative;
-    height:50vh;
-    width:40vw;
+    height:100%;
+    width:fit-content;
     align: center;
 }

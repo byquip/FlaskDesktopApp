@@ -49,8 +49,8 @@ def run_desktop():
     t.start()
 
     # Create a borderless webview window
-    webview.create_window("My Flask App", 'http://localhost:5000', frameless=False, transparent=False)
-    webview.start()
+    webview.create_window("My Flask App", 'http://localhost:5000', frameless=True, transparent=False)
+    webview.start(debug=False, http_server=False, user_agent=None)
 
 
 if __name__ == '__main__':
