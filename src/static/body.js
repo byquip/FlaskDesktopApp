@@ -143,7 +143,7 @@ else{
 }
 }
 
-$('#Scan').click(function(){
+function scan(){
     fetch_ports();
-});
+}
 

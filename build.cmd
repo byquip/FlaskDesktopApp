@@ -1,0 +1,1 @@
+C:\Users\vasko\PycharmProjects\FlaskDesktopApp\venv\Scripts\pyinstaller.exe --paths=venv\Lib\site-packages --name="Diode COM" --onefile --add-data="src\static;static" --add-data="src\templates;templates" --add-data="src\*.py;." src\app.py --noconsole
