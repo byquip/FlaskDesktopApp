@@ -2,8 +2,10 @@ import serial
 import sys
 import glob
 import time
+from read_write import WriteData
 
 start_time = 0
+rd = None
 
 
 def serial_ports():
@@ -36,19 +38,25 @@ def serial_ports():
 
 
 def connect(port):
-    global start_time
+    global start_time, rd
     start_time = time.time()
     ser = serial.Serial(port, 9600, timeout=1)
     ser.flush()
+    rd = WriteData("device", "recorded_data")
+    headers = ["time", "Voltage"]
+    rd.create_header(headers)
     return ser
 
 
 def disconnect(ser):
+    global rd
     ser.close()
+    rd = None
     return "disconnected"
 
 
 def read(ser):
+    global start_time, rd
     if ser is None:
         return "No device connected"
     if ser.in_waiting > 20:
@@ -59,5 +67,7 @@ def read(ser):
         except:
             return "No device connected"
         finally:
-            print(line)
-            return {"x": (time.time()-start_time), "y": (float(line))}
+            t = time.time()-start_time
+            value = float(line)
+            rd.write_data([t, value])
+            return {"x": t, "y": value}

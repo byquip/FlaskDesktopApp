@@ -1,5 +1,11 @@
 console.log("Start");
 
+//window.onload = onload();
+
+function onload() {
+    $.get('api/on_loaded')
+}
+
 var canvas = document.getElementById('myChart');
 
 const data = {
@@ -109,8 +115,6 @@ function fetch_data() {
     return result;
 }
 
-//window.onload = fetch_ports();
-
 var interval_chart;
 
 function discon(){
@@ -146,4 +150,6 @@ else{
 function scan(){
     fetch_ports();
 }
+
+ onload();
 
