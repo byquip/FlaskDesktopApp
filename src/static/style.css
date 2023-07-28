@@ -1,13 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
-html, body{
+html, body::after{
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
     background-color: #212121;
     color: #fff;
+    position: relative;
+    height:50vh;
+    width:45vw
 }
 
-.myChartr {
-   width: 300px;
-   height:150px
+html { background-color: rgba(0,0,0,0)}
+body {
+    background-color:#212121;
+    border-radius: 20px;
+    -moz-border-radius:14px;
+    -webkit-border-radius:14px;
+    -moz-box-shadow:0 2px 2px rgba(0,0,0,0.3);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0,0.3);
+    box-shadow: 0 12px 12px rgba(0,0,0,0.3);
+}
+
+.pywebview-drag-region{
+    align-items: center;
+    height:25px;
+    text-align: center;
+
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.buttons button, .buttons select {
+    height: 3.5vh; /* Adjust as needed */
+    width: 8vh; /* Adjust as needed */
+    font-size: 2vh; /* Adjust as needed */
+}
+
+.chart-container{
+    position: relative;
+    height:50vh;
+    width:40vw;
+    align: center;
 }

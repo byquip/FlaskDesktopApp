@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" >
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,9 +12,6 @@
 <body>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div class='pywebview-drag-region'>Test App</div>
-    <div class="chart-container" style="position: relative; height:50vh; width:40vw">
-        <canvas id="myChart"  width="200" height="150" ></canvas>
-    </div>
 
     <!--    <div class="logo">-->
     <!--        <img src="./static/logo.png" alt="logo">-->
@@ -26,10 +23,10 @@
         </select>
         <button onclick='discon()' id="Connect">Connect</button>
     </div>
-    <p>Current CPU usage: <span id="cpu_usage">00.0</span>%</p>
 
-    <progress id="usage" value="0" max="100"></progress>
-
+    <div class="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
     <script src="./static/body.js"></script>
 
 </body>
